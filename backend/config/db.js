@@ -1,9 +1,9 @@
 const mysql = require('mysql2');
 const con = mysql.createConnection({
-    host: "localhost",
-    user: "root",
-    password: "123456",
-    database: "students"
+    host: "non-prod-mep-green-mol6kz.cluster-cefmhl7ts69d.ap-south-1.rds.amazonaws.com",
+    user: "nextiasproddb",
+    password: "TiGER#123",
+    database: "next_ias_uat"
 })
 
 con.connect((err) => {
@@ -14,5 +14,6 @@ con.connect((err) => {
         console.log(`Connection created successfully`);
     }
 })
+
 
 module.exports = con;
