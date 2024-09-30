@@ -1,0 +1,24 @@
+PODS:
+  - DataCache (1.7)
+  - IQKeyboardManager (6.5.19)
+  - Kingfisher (7.12.0)
+
+DEPENDENCIES:
+  - DataCache
+  - IQKeyboardManager
+  - Kingfisher
+
+SPEC REPOS:
+  trunk:
+    - DataCache
+    - IQKeyboardManager
+    - Kingfisher
+
+SPEC CHECKSUMS:
+  DataCache: 0a3275dd976cffdca6ee30a3276f2738a90dfd08
+  IQKeyboardManager: c8665b3396bd0b79402b4c573eac345a31c7d485
+  Kingfisher: 53a10ea35051a436b5fb626ca2dd8f3144d755e9
+
+PODFILE CHECKSUM: 1df814faf2457a4294d4a115b1a1d079dca1e77a
+
+COCOAPODS: 1.15.2
