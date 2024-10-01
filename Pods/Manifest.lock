@@ -1,24 +1,28 @@
 PODS:
   - DataCache (1.7)
   - IQKeyboardManager (6.5.19)
-  - Kingfisher (7.12.0)
+  - Kingfisher (8.0.3)
+  - Toaster (2.3.0)
 
 DEPENDENCIES:
   - DataCache
   - IQKeyboardManager
   - Kingfisher
+  - Toaster
 
 SPEC REPOS:
   trunk:
     - DataCache
     - IQKeyboardManager
     - Kingfisher
+    - Toaster
 
 SPEC CHECKSUMS:
   DataCache: 0a3275dd976cffdca6ee30a3276f2738a90dfd08
   IQKeyboardManager: c8665b3396bd0b79402b4c573eac345a31c7d485
-  Kingfisher: 53a10ea35051a436b5fb626ca2dd8f3144d755e9
+  Kingfisher: bbf78af014cc845cf9a799363f627b5212784165
+  Toaster: c3473963c78e8cabbf6ea6f11ad0fdaae6f54987
 
-PODFILE CHECKSUM: 1df814faf2457a4294d4a115b1a1d079dca1e77a
+PODFILE CHECKSUM: 21fc4463a0342b482654c2b7de0ff353f6b7d044
 
 COCOAPODS: 1.15.2

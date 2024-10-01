@@ -1,6 +1,0 @@
-framework module Pods_HackethonDemo {
-  umbrella header "Pods-HackethonDemo-umbrella.h"
-
-  export *
-  module * { export * }
-}
