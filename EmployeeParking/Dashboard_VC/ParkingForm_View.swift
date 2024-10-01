@@ -24,6 +24,7 @@ struct ParkingForm_View: View {
     
     var onDismiss: () -> Void
     
+    
     var body: some View {
         NavigationView {
             VStack{
@@ -83,8 +84,9 @@ struct ParkingForm_View: View {
                         ]
                         if let image = UIImage(named: "splash") {
                             
-                            parkingVM.uploadMultipart(url: url!, parameters: postData, image: image, imageName:"parking_receipt" , fileName: "splash.png") { data in
+                            parkingVM.uploadMultipart(url: url!, parameters: postData, image: image, imageName:"file" , fileName: "splash.png") { data in
                                 onDismiss()
+                                CommonUtils.showToast(message: "File Uploaded Successfully")
                             }
                         }
                     }

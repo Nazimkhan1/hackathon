@@ -6,21 +6,59 @@
 //
 
 import SwiftUI
+import Kingfisher
 
 struct Dashboard_VC: View {
+    @StateObject var dashboard_VM = Dashboard_VM()
+    
+    @State private var listDashboard: [DashboardData_Modal]?
     @State private var showVehiclePopup = false
     @State private var refreshMessage = "Dashboard not refreshed yet"
     
+    
     var body: some View {
-        NavigationView {
+        NavigationStack {
             ZStack {
+                List{
+                    ForEach(self.listDashboard ?? []){list in
+                               HStack{
+                                   KFImage(URL(string: list.receiptFile ?? ""))
+                                                  .placeholder {
+                                                      Circle().fill(Color.blue)
+                                                          .frame(width: 70, height: 70)
+                                                  }
+                                                  .resizable()
+                                                  .setProcessor(ResizingImageProcessor(referenceSize: CGSize(width: 70, height: 70), mode: .aspectFit))
+                                                  .frame(width: 70, height: 70)
+                                   .frame(width: 70, height: 70)
+                                   .clipShape(RoundedRectangle(cornerRadius: 12))
+                                    
+                                   VStack(alignment: .leading) {
+                                       if list.vehicleType == "1" {
+                                           Text("Vehicle Type").bold()
+                                           Text("Car").fontWeight(.regular)
+                                           Text("Parking Amount").bold()
+                                           Text("Rs. 80").fontWeight(.regular)
+                                       } else if list.vehicleType == "3" {
+                                           Text("Vehicle Type").bold()
+                                           Text("Bike").fontWeight(.regular)
+                                           Text("Parking Amount").bold()
+                                           Text("Rs. 40").fontWeight(.regular)
+                                       }
+                                   }
+                               }
+                           }
+                       }
+                       .task {
+                           self.dashboard_API()
+                       }
+                       .listStyle(PlainListStyle())
                 VStack {
                     Spacer()
                     HStack {
                         Spacer()
                         Button(action: {
                             showVehiclePopup.toggle()
-                            
                         }) {
                             Image(systemName: "plus")
                                 .resizable()
@@ -33,40 +71,30 @@ struct Dashboard_VC: View {
                         .padding(.trailing, 20)
                         .padding(.bottom, 20)
                     }
-                    
                 }
-                //                .navigationDestination(isPresented: $showVehiclePopup) {
-                //                    VechicleTypeView {
-                //                            self.refreshDashboard()
-                //                    }
-                //                }
                 
-                
-                
+                .background(
+                    NavigationLink(destination: VechicleTypeView {
+                        self.refreshDashboard()
+                    }, isActive: $showVehiclePopup) {
+                        EmptyView()
+                    }
+                )
             }
             .navigationTitle("Dashboard")
             .navigationBarItems(
                 trailing: HStack {
-                    // First button in navigation bar
                     Button(action: {
                         print("First button action")
                     }) {
                         Image(systemName: "line.3.horizontal.decrease.circle")
                     }
                     
-                    // Second button in navigation bar
                     Button(action: {
                         print("Second button action")
                     }) {
                         Image("logout")
                     }
-                }
-            )
-            .background(
-                NavigationLink(destination: VechicleTypeView {
-                    self.refreshDashboard()
-                }, isActive: $showVehiclePopup) {
-                    EmptyView()
                 }
             )
         }
@@ -75,6 +103,20 @@ struct Dashboard_VC: View {
     // Completion handler to refresh dashboard
     func refreshDashboard() {
         self.refreshMessage = "Dashboard refreshed!"
+    }
+    
+    func dashboard_API() {
+        
+        APIManager.shared.callAPI(DashboardModal.self, apiName: .parkingList, postDict: [:], httpMethod: .POST) { responseModel, response, errorMessage in
+            
+            if errorMessage == nil {
+                if let resData = responseModel?.data {
+                    self.listDashboard = resData
+                }
+            }else{
+                self.listDashboard = nil
+            }
+        }
     }
 }
 

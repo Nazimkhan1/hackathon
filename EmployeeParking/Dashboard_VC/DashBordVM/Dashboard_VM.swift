@@ -9,67 +9,73 @@ import UIKit
 
 class Dashboard_VM: ObservableObject {
     
-    @Published var loginDataReponse:LoginData_Modal?
+    @Published var dashboardData_Modal : DashboardData_Modal?
     
-    func uploadMultipart(
-        url: URL,
-        parameters: [String: String], // For other form parameters
-        image: UIImage, // The image to upload
-        imageName: String, // The key for the image file
-        fileName: String, // The file name for the uploaded image
-        mimeType: String = "image/jpeg", // The mime type for the image
-        completion: @escaping (Result<Data, Error>) -> Void
-    ) {
-        var request = URLRequest(url: url)
-        request.httpMethod = "POST"
+    func hitDashboard_API(_ success:@escaping(_ response: [DashboardData_Modal]?) -> Void) {
         
-        // Define boundary
-        let boundary = UUID().uuidString
         
-        // Set content type
-        request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
-        
-        // Create HTTP body
-        let httpBody = createBodyWithParameters(parameters: parameters, image: image, boundary: boundary, imageName: imageName, fileName: fileName, mimeType: mimeType)
-        
-        // Set HTTP body
-        request.httpBody = httpBody
-        
-        // Execute upload task
-        let task = URLSession.shared.dataTask(with: request) { data, response, error in
-            if let error = error {
-                completion(.failure(error))
-                return
+        Dashboard_APIServies.shared.dashboard_API() { result in
+            if let response = result {
+                success(response)
             }
-            if let data = data {
-                completion(.success(data))
-            }
+        } failure: { failureMsg in
+            success(nil)
+            CommonUtils.showToast(message: failureMsg)
         }
-        task.resume()
-    }
-    
-    private func createBodyWithParameters(parameters: [String: String], image: UIImage, boundary: String, imageName: String, fileName: String, mimeType: String) -> Data {
-        let body = NSMutableData()
+
         
-        // Add parameters
-        for (key, value) in parameters {
-            body.append("--\(boundary)\r\n".data(using: .utf8)!)
-            body.append("Content-Disposition: form-data; name=\"\(key)\"\r\n\r\n".data(using: .utf8)!)
-            body.append("\(value)\r\n".data(using: .utf8)!)
-        }
-        
-        // Add image data
-        if let imageData = image.jpegData(compressionQuality: 0.7) {
-            body.append("--\(boundary)\r\n".data(using: .utf8)!)
-            body.append("Content-Disposition: form-data; name=\"\(imageName)\"; filename=\"\(fileName)\"\r\n".data(using: .utf8)!)
-            body.append("Content-Type: \(mimeType)\r\n\r\n".data(using: .utf8)!)
-            body.append(imageData)
-            body.append("\r\n".data(using: .utf8)!)
-        }
-        
-        // Add boundary end
-        body.append("--\(boundary)--\r\n".data(using: .utf8)!)
-        
-        return body as Data
     }
 }
+
+
+struct Dashboard_APIServies {
+    public static let shared = Dashboard_APIServies()
+     
+    func dashboard_API(success: @escaping (_ result:[DashboardData_Modal]?) -> Void, failure: @escaping (_ failureMsg: FailureMessage) -> Void) {
+        
+        APIManager.shared.callAPI(DashboardModal.self, apiName: .parkingList, postDict: [:], httpMethod: .GET) { responseModel, response, errorMessage in
+            
+            if errorMessage == nil {
+                if let resData = responseModel?.data {
+                    success(resData)
+                }
+            }else{
+                failure("\(responseModel?.message ?? "Authentication failed !!!")")
+            }
+        }
+    }
+}
+
+// MARK: - Welcome
+struct DashboardModal: Codable {
+    var statusCode: Int?
+    var message: String?
+    var data: [DashboardData_Modal]?
+
+    enum CodingKeys: String, CodingKey {
+        case statusCode = "status_code"
+        case message, data
+    }
+}
+
+// MARK: - DashboardData_Modal
+struct DashboardData_Modal: Codable, Identifiable {
+    var id: Int?
+    var vehicleType, amount: String?
+    var receiptFile: String?
+    var createdAt, updatedAt: String?
+    var userID: Int?
+    var receiptDate: String?
+
+    enum CodingKeys: String, CodingKey {
+        case id
+        case vehicleType = "vehicle_type"
+        case amount
+        case receiptFile = "receipt_file"
+        case createdAt = "created_at"
+        case updatedAt = "updated_at"
+        case userID = "user_id"
+        case receiptDate = "receipt_date"
+    }
+}
+

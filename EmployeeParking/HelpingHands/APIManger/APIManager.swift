@@ -12,6 +12,7 @@ import Foundation
 enum APIName: String {
     case login = "loginPost"
     case register = "registrationPost"
+    case parkingList = "parkingList"
     // Add more cases as needed
 }
 
