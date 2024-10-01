@@ -1,6 +1,6 @@
 const db = require('../config/db');
 
-exports.getReceiptUsers = (searchMonth, callback) => {
+exports.getReceiptUsers = (callback) => {
     db.query("select * from user_receipts", (err, res) => {
         if (err) return callback(err);
         callback(null, res)

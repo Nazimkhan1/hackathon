@@ -7,7 +7,7 @@ const secretKey = 'secretKey';
 // Get all users
 
 exports.receiptList = (req, res) => {
-    Receipt.getReceiptUsers(searchMonth, (err, receipts) => {
+    Receipt.getReceiptUsers((err, receipts) => {
         if (err) {
             res.status(500).json({ error: err.message });
         } else {
