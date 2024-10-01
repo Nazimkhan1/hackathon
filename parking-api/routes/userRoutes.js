@@ -23,7 +23,7 @@ router.post('/registrationPost', userController.registrationPost);
 router.get('/listUsers', userController.getListUsers);
 
 router.post('/saveParkingBill',parkingController.saveParkingBill);
-router.get('/parkingList',parkingListController.receiptList);
+router.post('/parkingList',parkingListController.receiptList);
 router.post('/userReceiptList',parkingListController.userReceiptList);
 
 
