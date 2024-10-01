@@ -71,17 +71,17 @@ struct LoginView_VC: View {
                     Button(action: {
                         print("Login tapped")
                         isLoggedIn = true
-//                        if validateForm() {
-//                            let loginParam_Request = LoginParam_Request(email:tf_Email,password:tf_Password)
-//                            login_VM.hitLogin_API(loginParam_Request) { response in
-//                                if response != nil {
-//                                    isLoggedIn = true
-//                                }else {
-//                                    print("API Reponse is Failed")
-//                                    isLoggedIn = true
-//                                }
-//                            }
-//                        }
+                       if validateForm() {
+                           let loginParam_Request = LoginParam_Request(email:tf_Email,password:tf_Password)
+                           login_VM.hitLogin_API(loginParam_Request) { response in
+                               if response != nil {
+                                   isLoggedIn = true
+                               }else {
+                                   print("API Reponse is Failed")
+                                   isLoggedIn = true
+                               }
+                           }
+                       }
                     }) {
                         Text("Login")
                             .frame(maxWidth: .infinity)
