@@ -55,14 +55,17 @@ exports.saveParkingBill = async (req, res) => {
     const amount = req.body.amount;
     const vehicle_type = req.body.vehicle_type;
     const user_id = req.body.user_id;
+    const receiptDate = req.body.parking_date;
+
     const receiptData = { 
      "user_id":user_id,
      "vehicle_type":vehicle_type,
      "amount":amount,
      "receipt_file":filePath,
+     "receipt_date": receiptDate,
+     "created_at": new Date(receiptDate),
  
     };
-
 
 
     Receipt.saveReceipt(receiptData, (err, receipts) => {
