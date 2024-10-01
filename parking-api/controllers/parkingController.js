@@ -63,7 +63,7 @@ exports.saveParkingBill = async (req, res) => {
      "amount":amount,
      "receipt_file":filePath,
      "receipt_date": receiptDate,
-     "created_at": new Date(receiptDate),
+     "created_at": new Date(),
  
     };
 
