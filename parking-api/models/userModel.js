@@ -6,13 +6,30 @@ exports.getUser = (loginData, callback) => {
     console.log('data',password);
     db.query("select id,name,email,user_device from users where email = ?", email, (err, res) => {
         if (err) return callback(err);
+        callback(null, res[0])
+    });
+};
+
+exports.registerUser = (regData, callback) => {
+    const email = loginData.email;
+    const password = loginData.password;
+    console.log('data',password);
+    db.query("select id,name,email,user_device from users where email = ?", email, (err, res) => {
+        if (err) return callback(err);
         callback(null, res)
+    });
+};
+
+exports.checkUserExist = (email, callback) => {
+    db.query("select email from student_details where email = ?", email, (err, res) => {
+        if (err) return callback(err);
+        callback(null, res[0]);
     });
 };
 
 
 exports.getAllUsers = (callback) => {
-    db.query("select * from student_details", (err, res) => {
+    db.query("select * from users", (err, res) => {
         if (err) return callback(err);
         callback(null, res)
     });

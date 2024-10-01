@@ -16,11 +16,49 @@ exports.loginPost = (req, res) => {
           const response = {
                 status_code: 1,
                 message: 'Your login informations',
-                data: users
+                data: Object.assign({}, users),
             };
         
             res.status(202).json(response);
         
+        }
+    });
+};
+
+exports.registrationPost = (req, res) => {
+ 
+    const newUser = req.body;
+    // const ExistUser = User.checkUserExist(newUser.email);
+    // if(ExistUser){
+    //     res.status(500).json({ error: 'User Already Exist!' });
+    // }
+    User.createUser(newUser, (err, userId) => {
+        if (err) {
+            res.status(500).json({ error: err.message });
+        } else {
+            const response = {
+                status_code: 1,
+                message: 'You are successfully registered with us!',
+                data: userId
+            };
+        
+            res.status(202).json(response);
+        }
+    });
+};
+
+exports.getListUsers = (req, res) => {
+    User.getAllUsers((err, users) => {
+        if (err) {
+            res.status(500).json({ error: err.message });
+        } else {
+            const response = {
+                status_code: 1,
+                message: 'All user list',
+                data: users
+            };
+        
+            res.status(202).json(response);
         }
     });
 };
@@ -34,6 +72,7 @@ exports.getAllUsers = (req, res) => {
         }
     });
 };
+
 
 // Get user by ID
 exports.getUserById = (req, res) => {
