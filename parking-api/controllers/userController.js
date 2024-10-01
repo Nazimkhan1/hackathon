@@ -4,8 +4,6 @@ const jwt = require('jsonwebtoken');
 const redisClient = require('../config/redis');
 const secretKey = 'secretKey';
 
-// Get all users
-
 exports.loginPost = (req, res) => {
     const loginData = req.body;
    // console.log(loginData); return false;
